@@ -12,10 +12,6 @@
 #include "SpellInterface.h"
 #include "ItemSlot.h"
 
-#include <boost/python/suite/indexing/map_indexing_suite.hpp>
-#include <boost/python.hpp>
-
-using namespace boost::python;
 using namespace std::chrono;
 
 /// Base game object

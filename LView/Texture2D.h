@@ -2,6 +2,7 @@
 #include "stb_image.h"
 #include <d3d11.h>
 #include <functional>
+#include <string>
 
 class Texture2D {
 

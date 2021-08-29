@@ -1,9 +1,9 @@
 #include "GameData.h"
 #include <boost/json.hpp>
 #include <fstream>
-#include <filesystem>
 #include "Utils.h"
 #include "Overlay.h"
+#include <filesystem>
 
 using namespace std;
 
@@ -158,8 +158,8 @@ void GameData::LoadIcons(std::string& path)
 	WIN32_FIND_DATAA findData;
 	HANDLE hFind;
 
-	
-	int nrFiles = std::distance(filesystem::directory_iterator(path), filesystem::directory_iterator());
+
+	int nrFiles = std::distance(std::filesystem::directory_iterator(path), std::filesystem::directory_iterator());
 	int nrFile = 0;
 	hFind = FindFirstFileA((folder + "\\*.png").c_str(), &findData);
 	do {
