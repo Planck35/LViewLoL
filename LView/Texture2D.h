@@ -1,14 +1,16 @@
 #pragma once
-#include "stb_image.h"
 #include <d3d11.h>
+
 #include <functional>
 #include <string>
 
-class Texture2D {
+#include "stb_image.h"
 
-public:
-	static Texture2D* LoadFromFile(ID3D11Device* dxDevice, std::string file);
-public:
-	ID3D11ShaderResourceView* resourceView;
-	int width, height;
+class Texture2D {
+ public:
+  static Texture2D* LoadFromFile(ID3D11Device* dxDevice, std::string file);
+
+ public:
+  ID3D11ShaderResourceView* resourceView;
+  int width, height;
 };

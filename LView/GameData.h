@@ -1,31 +1,33 @@
 #pragma once
 #include <map>
-#include "UnitInfo.h"
+
+#include "ItemInfo.h"
 #include "SpellInfo.h"
 #include "Texture2D.h"
-#include "ItemInfo.h"
+#include "UnitInfo.h"
 
-/// Data that cant be read from memory or it is too inefficient to do so can be accessed with this class.
+/// Data that cant be read from memory or it is too inefficient to do so can be
+/// accessed with this class.
 class GameData {
+ public:
+  static void Load(std::string& dataFolder);
+  static UnitInfo* GetUnitInfoByName(std::string& name);
+  static SpellInfo* GetSpellInfoByName(std::string& name);
+  static ItemInfo* GetItemInfoById(int id);
 
-public:
-	static void       Load(std::string& dataFolder);
-	static UnitInfo*  GetUnitInfoByName(std::string& name);
-	static SpellInfo* GetSpellInfoByName(std::string& name);
-	static ItemInfo*  GetItemInfoById(int id);
-private:
-	static void LoadUnitData(std::string& path);
-	static void LoadSpellData(std::string& path);
-	static void LoadIcons(std::string& path);
-	static void LoadItemData(std::string& path);
+ private:
+  static void LoadUnitData(std::string& path);
+  static void LoadSpellData(std::string& path);
+  static void LoadIcons(std::string& path);
+  static void LoadItemData(std::string& path);
 
-public:
-	static UnitInfo*                         UnknownUnit;
-	static SpellInfo*                        UnknownSpell;
-	static ItemInfo*                         UnknownItem;
+ public:
+  static UnitInfo* UnknownUnit;
+  static SpellInfo* UnknownSpell;
+  static ItemInfo* UnknownItem;
 
-	static std::map<std::string, UnitInfo*>  Units;
-	static std::map<std::string, SpellInfo*> Spells;
-	static std::map<std::string, Texture2D*> Images;
-	static std::map<int, ItemInfo*>          Items;
+  static std::map<std::string, UnitInfo*> Units;
+  static std::map<std::string, SpellInfo*> Spells;
+  static std::map<std::string, Texture2D*> Images;
+  static std::map<int, ItemInfo*> Items;
 };
