@@ -12,8 +12,6 @@
 #include "SpellInterface.h"
 #include "ItemSlot.h"
 
-using namespace boost::python;
-using namespace std::chrono;
 
 /// Base game object
 ///
