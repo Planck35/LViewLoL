@@ -1,5 +1,4 @@
-﻿#define BOOST_DEBUG_PYTHON
-#define USE_IMPORT_EXPORT
+﻿#define USE_IMPORT_EXPORT
 #define USE_WINDOWS_DLL_SEMANTICS
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -16,7 +15,6 @@
 #include "MapObject.h"
 #include "Offsets.h"
 #include "Overlay.h"
-#include "PyStructs.h"
 #include "Structs.h"
 #include "Utils.h"
 #include "windows.h"
@@ -40,10 +38,6 @@ int main() {
   LeagueMemoryReader reader = LeagueMemoryReader();
 
   try {
-    printf("[+] Initializing PyModule\n");
-    PyImport_AppendInittab("lview", &PyInit_lview);
-    Py_Initialize();
-
     printf("[+] Initialising imgui and directx UI\n");
     overlay.Init();
 
@@ -57,13 +51,12 @@ int main() {
 
     MainLoop(overlay, reader);
 
-    Py_Finalize();
   } catch (std::runtime_error exception) {
     std::cout << exception.what() << std::endl;
   }
 
   printf("Press any key to exit...");
-  getch();
+  //getch();
 }
 
 void MainLoop(Overlay& overlay, LeagueMemoryReader& reader) {

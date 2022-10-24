@@ -69,8 +69,8 @@ void Overlay::Init() {
 }
 
 void Overlay::GameStart(MemSnapshot& memSnapshot) {
-  scriptManager.LoadAll(configs.GetStr("scriptsFolder", "."),
-                        memSnapshot.player->name);
+  //scriptManager.LoadAll(configs.GetStr("scriptsFolder", "."),
+  //                      memSnapshot.player->name);
 }
 
 void Overlay::StartFrame() {
@@ -92,7 +92,7 @@ void Overlay::Update(MemSnapshot& memSnapshot) {
   if (memSnapshot.champions.size() == 0 || !isWindowVisible) return;
 
   auto timeBefore = high_resolution_clock::now();
-  PyGame state = PyGame::ConstructFromMemSnapshot(memSnapshot);
+  Game state = Game::ConstructFromMemSnapshot(memSnapshot);
 
   DrawOverlayWindows(state);
   ExecScripts(state);
@@ -121,15 +121,15 @@ void Overlay::RenderFrame() {
   renderTimeMs = timeDuration.count();
 }
 
-void Overlay::ExecScripts(PyGame& state) {
-  for (auto& script : scriptManager.activeScripts) {
-    if (script->enabled && script->loadError.empty() &&
-        script->execError.empty())
-      script->ExecUpdate(state, imguiInterface);
-  }
+void Overlay::ExecScripts(Game& state) {
+  //for (auto& script : scriptManager.activeScripts) {
+  //  if (script->enabled && script->loadError.empty() &&
+  //      script->execError.empty())
+  //    script->ExecUpdate(state, imguiInterface);
+  //}
 }
 
-void Overlay::DrawUI(PyGame& state, MemSnapshot& memSnapshot) {
+void Overlay::DrawUI(Game& state, MemSnapshot& memSnapshot) {
   high_resolution_clock::time_point timeBefore;
 
   ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
@@ -153,7 +153,7 @@ void Overlay::DrawUI(PyGame& state, MemSnapshot& memSnapshot) {
   ImGui::End();
 }
 
-void Overlay::DrawOverlayWindows(PyGame& state) {
+void Overlay::DrawOverlayWindows(Game& state) {
   // Draw game overlay (used for primitive rendering)
   auto io = ImGui::GetIO();
   ImGui::SetNextWindowSize(io.DisplaySize);
@@ -167,100 +167,100 @@ void Overlay::DrawOverlayWindows(PyGame& state) {
   ImGui::End();
 }
 
-void Overlay::DrawScriptSettings(PyGame& state, MemSnapshot& memSnapshot) {
-  ImGui::Text("Script Settings");
-  if (ImGui::Button("Save all script settings")) {
-    scriptManager.SaveAllScriptsConfigs();
-    configs.SaveToFile();
-  }
-  ImGui::SameLine();
-  if (ImGui::Button("Reload all scripts")) {
-    GameStart(memSnapshot);
-  }
+void Overlay::DrawScriptSettings(Game& state, MemSnapshot& memSnapshot) {
+  //ImGui::Text("Script Settings");
+  //if (ImGui::Button("Save all script settings")) {
+  //  scriptManager.SaveAllScriptsConfigs();
+  //  configs.SaveToFile();
+  //}
+  //ImGui::SameLine();
+  //if (ImGui::Button("Reload all scripts")) {
+  //  GameStart(memSnapshot);
+  //}
 
-  int idNode = 10000;
-  for (std::shared_ptr<Script>& script : scriptManager.activeScripts) {
-    idNode++;
+  //int idNode = 10000;
+  //for (std::shared_ptr<Script>& script : scriptManager.activeScripts) {
+  //  idNode++;
 
-    // If we got any load/execution script error we should print it in bright
-    // red
-    if (!script->loadError.empty() || !script->execError.empty()) {
-      DrawScriptError(script);
-    } else {
-      // Gray out disabled cheat
-      bool skippedExecution = false;
-      if (!script->enabled) {
-        ImGui::PushStyleColor(ImGuiCol_Header, Colors::GRAY);
-        skippedExecution = true;
-      }
+  //  // If we got any load/execution script error we should print it in bright
+  //  // red
+  //  if (!script->loadError.empty() || !script->execError.empty()) {
+  //    DrawScriptError(script);
+  //  } else {
+  //    // Gray out disabled cheat
+  //    bool skippedExecution = false;
+  //    if (!script->enabled) {
+  //      ImGui::PushStyleColor(ImGuiCol_Header, Colors::GRAY);
+  //      skippedExecution = true;
+  //    }
 
-      if (ImGui::CollapsingHeader(script->name.c_str())) {
-        ImGui::Indent(16.0f);
+  //    if (ImGui::CollapsingHeader(script->name.c_str())) {
+  //      ImGui::Indent(16.0f);
 
-        DrawScriptCommonSettings(script, idNode);
-        script->ExecDrawSettings(state, imguiInterface);
+  //      DrawScriptCommonSettings(script, idNode);
+  //      script->ExecDrawSettings(state, imguiInterface);
 
-        ImGui::Unindent();
-      }
+  //      ImGui::Unindent();
+  //    }
 
-      if (skippedExecution) ImGui::PopStyleColor();
-    }
-  }
+  //    if (skippedExecution) ImGui::PopStyleColor();
+  //  }
+  //}
 }
 
 void Overlay::DrawBenchmarks(MemSnapshot& memSnapshot) {
-  ImGui::Text("Benchmarks");
-  float readMemoryTime = memSnapshot.benchmark->readObjectsMs +
-                         memSnapshot.benchmark->readRendererMs;
+  //ImGui::Text("Benchmarks");
+  //float readMemoryTime = memSnapshot.benchmark->readObjectsMs +
+  //                       memSnapshot.benchmark->readRendererMs;
 
-  float totalMs = readMemoryTime + renderTimeMs + processTimeMs;
+  //float totalMs = readMemoryTime + renderTimeMs + processTimeMs;
 
-  ImGui::DragFloat("Total Time (ms)", &totalMs);
-  ImGui::DragFloat("Render UI Time (ms)", &renderTimeMs);
-  ImGui::DragFloat("Total Scripts Time (ms)", &processTimeMs);
-  ImGui::DragFloat("Read Memory Time (ms)", &readMemoryTime);
+  //ImGui::DragFloat("Total Time (ms)", &totalMs);
+  //ImGui::DragFloat("Render UI Time (ms)", &renderTimeMs);
+  //ImGui::DragFloat("Total Scripts Time (ms)", &processTimeMs);
+  //ImGui::DragFloat("Read Memory Time (ms)", &readMemoryTime);
 
-  if (ImGui::TreeNode("Memory read time (ms)")) {
-    ImGui::DragFloat("Read objects", &memSnapshot.benchmark->readObjectsMs);
-    ImGui::DragFloat("Read renderer", &memSnapshot.benchmark->readRendererMs);
-    ImGui::TreePop();
-  }
+  //if (ImGui::TreeNode("Memory read time (ms)")) {
+  //  ImGui::DragFloat("Read objects", &memSnapshot.benchmark->readObjectsMs);
+  //  ImGui::DragFloat("Read renderer", &memSnapshot.benchmark->readRendererMs);
+  //  ImGui::TreePop();
+  //}
 
-  if (ImGui::TreeNode("Script process time (ms)")) {
-    for (std::shared_ptr<Script>& script : scriptManager.activeScripts) {
-      float ms = script->updateTimeMs.count();
-      ImGui::DragFloat(script->name.c_str(), &ms);
-    }
-    ImGui::TreePop();
-  }
+  //if (ImGui::TreeNode("Script process time (ms)")) {
+  //  for (std::shared_ptr<Script>& script : scriptManager.activeScripts) {
+  //    float ms = script->updateTimeMs.count();
+  //    ImGui::DragFloat(script->name.c_str(), &ms);
+  //  }
+  //  ImGui::TreePop();
+  //}
 }
 
 void Overlay::DrawScriptError(std::shared_ptr<Script>& script) {
-  ImGui::PushStyleColor(ImGuiCol_Header, Colors::RED);
-  if (ImGui::CollapsingHeader(script->name.c_str())) {
-    if (ImGui::Button("Reload script")) scriptManager.ReloadScript(script);
+  //ImGui::PushStyleColor(ImGuiCol_Header, Colors::RED);
+  //if (ImGui::CollapsingHeader(script->name.c_str())) {
+  //  if (ImGui::Button("Reload script")) scriptManager.ReloadScript(script);
 
-    ImGui::TextColored(Colors::RED, script->loadError.c_str());
-    ImGui::TextColored(Colors::RED, script->execError.c_str());
-  }
-  ImGui::PopStyleColor();
+  //  ImGui::TextColored(Colors::RED, script->loadError.c_str());
+  //  ImGui::TextColored(Colors::RED, script->execError.c_str());
+  //}
+  //ImGui::PopStyleColor();
 }
 
 void Overlay::DrawScriptCommonSettings(std::shared_ptr<Script>& script,
                                        int id) {
-  if (ImGui::TreeNode(&id, "About")) {
-    ImGui::LabelText("Author", script->author.c_str());
-    ImGui::TextWrapped(script->description.c_str());
-    ImGui::TreePop();
-  }
-  if (ImGui::Button("Reload script")) scriptManager.ReloadScript(script);
-  ImGui::SameLine();
-  if (ImGui::Button("Save settings")) {
-    scriptManager.SaveScriptConfigs(script);
-    configs.SaveToFile();
-  }
-  ImGui::Checkbox("Enabled", &script->enabled);
-  ImGui::Separator();
+  //if (ImGui::TreeNode(&id, "About")) {
+  //  ImGui::LabelText("Author", script->author.c_str());
+  //  ImGui::TextWrapped(script->description.c_str());
+  //  ImGui::TreePop();
+  //}
+  //if (ImGui::Button("Reload script")) scriptManager.ReloadScript(script);
+  //ImGui::SameLine();
+  //if (ImGui::Button("Save settings")) {
+  //  scriptManager.SaveScriptConfigs(script);
+  //  configs.SaveToFile();
+  //}
+  //ImGui::Checkbox("Enabled", &script->enabled);
+  //ImGui::Separator();
 }
 
 bool Overlay::IsVisible() { return isWindowVisible; }

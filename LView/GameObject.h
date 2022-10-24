@@ -92,7 +92,6 @@ class GameObject : MemoryLoadable, SpellInterface {
   Spell* GetSummonerSpell(SummonerSpellType type);
 
   bool IsRanged();
-  list ItemsToPyList();
 
   Spell Q = Spell(SpellSlot::Q);
   Spell W = Spell(SpellSlot::W);

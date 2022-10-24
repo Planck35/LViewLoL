@@ -203,6 +203,7 @@
     <ClInclude Include="AntiCrack.h" />
     <ClInclude Include="Benchmark.h" />
     <ClInclude Include="ConfigSet.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ItemSlot.h" />
@@ -212,7 +213,6 @@
     <ClInclude Include="imgui_impl_dx11.h" />
     <ClInclude Include="ItemInfo.h" />
     <ClInclude Include="MapObject.h" />
-    <ClInclude Include="PyGame.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_win32.h" />
@@ -224,8 +224,6 @@
     <ClInclude Include="LeagueMemoryReader.h" />
     <ClInclude Include="MemoryLoadable.h" />
     <ClInclude Include="MemSnapshot.h" />
-    <ClInclude Include="PyImguiInterface.h" />
-    <ClInclude Include="PyStructs.h" />
     <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="ScriptManager.h" />

@@ -1,40 +1,29 @@
 #pragma once
-#include <boost/python.hpp>
-
 #include "MemSnapshot.h"
 #include "Utils.h"
+#include "Vector.h"
+#include "imgui.h"
+#include <map>
+#include <memory>
+#include <vector>
 
-using namespace boost::python;
-
-/// Interface used by python scripts for game related stuff
-class PyGame {
+/// Interface for game related stuff
+class Game {
  public:
   std::map<int, float> distanceCache;
   MemSnapshot* ms;
   ImDrawList* overlay;
 
  public:
-  PyGame() {}
+  Game() {}
 
   // Exposed Fields
-  list champs, minions, turrets, jungle, missiles, others;
+  std::vector<GameObject> champs, minions, turrets, jungle, missiles, others;
   float gameTime;
 
-  MapObject* map;
-  GameObject* hoveredObject;
-  GameObject* localChampion;
-
-  object GetHoveredObject() {
-    if (hoveredObject == nullptr) return object();
-    return object(boost::ref(*hoveredObject));
-  }
-
-  object GetLocalChampion() {
-    if (localChampion == nullptr) return object();
-    return object(boost::ref(*localChampion));
-  };
-
-  object GetMap() { return object(boost::ref(*map)); }
+  std::shared_ptr<MapObject> map;
+  std::shared_ptr<GameObject> hoveredObject;
+  std::shared_ptr<GameObject> localChampion;
 
   // Exposed methods
   Vector2 WorldToScreen(const Vector3& pos) {
@@ -49,15 +38,11 @@ class PyGame {
     return ms->renderer->DistanceToMinimap(dist, ms->minimapSize);
   }
 
-  BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(IsScreenPointOnScreenOverloads,
-                                         IsScreenPointOnScreen, 1, 3);
   bool IsScreenPointOnScreen(const Vector2& point, float offsetX = 0.f,
                              float offsetY = 0.f) {
     return ms->renderer->IsScreenPointOnScreen(point, offsetX, offsetY);
   }
 
-  BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(IsWorldPointOnScreenOverloads,
-                                         IsWorldPointOnScreen, 1, 3);
   bool IsWorldPointOnScreen(const Vector3& point, float offsetX = 0.f,
                             float offsetY = 0.f) {
     return ms->renderer->IsWorldPointOnScreen(point, offsetX, offsetY);
@@ -79,15 +64,12 @@ class PyGame {
     overlay->AddText(ImVec2(pos.x, pos.y), ImColor(color), text);
   }
 
-  BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(DrawRectOverloads, DrawRect, 2, 4);
   void DrawRect(const Vector4& box, const ImVec4& color, float rounding = 0,
                 float thickness = 1.0) {
     overlay->AddRect(ImVec2(box.x, box.y), ImVec2(box.z, box.w), ImColor(color),
                      rounding, 15, thickness);
   }
 
-  BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(DrawRectFilledOverloads,
-                                         DrawRectFilled, 2, 3);
   void DrawRectFilled(const Vector4& box, const ImVec4& color,
                       float rounding = 0) {
     overlay->AddRectFilled(ImVec2(box.x, box.y), ImVec2(box.z, box.w),
@@ -163,7 +145,6 @@ class PyGame {
                              (ImVec2&)end, zero, one, ImColor(color), rounding);
   }
 
-  BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(DrawButtonOverloads, DrawButton, 4, 5);
   void DrawButton(const Vector2& p, const char* text, ImVec4& colorButton,
                   ImVec4& colorText, float rounding = 0) {
     int txtSize = strlen(text);
@@ -263,37 +244,33 @@ class PyGame {
     return (it != ms->objectMap.end()) ? it->second.get() : nullptr;
   }
 
-  static PyGame ConstructFromMemSnapshot(MemSnapshot& snapshot) {
-    PyGame gs;
+  static Game ConstructFromMemSnapshot(MemSnapshot& snapshot) {
+    Game game;
 
-    gs.ms = &snapshot;
-    gs.gameTime = snapshot.gameTime;
-    gs.hoveredObject = snapshot.hoveredObject.get();
-    gs.localChampion = snapshot.player.get();
-    gs.map = snapshot.map.get();
+    game.ms = &snapshot;
+    game.gameTime = snapshot.gameTime;
+    game.hoveredObject = snapshot.hoveredObject;
+    game.localChampion = snapshot.player;
+    game.map = snapshot.map;
 
-    for (auto it = snapshot.champions.begin(); it != snapshot.champions.end();
-         ++it) {
-      gs.champs.append(boost::ref(**it));
+    for (std::shared_ptr<GameObject> champion : snapshot.champions) {
+      game.champs.push_back(*champion);
     }
-    for (auto it = snapshot.minions.begin(); it != snapshot.minions.end();
-         ++it) {
-      gs.minions.append(boost::ref(**it));
+    for (std::shared_ptr<GameObject> minion : snapshot.minions) {
+      game.minions.push_back(*minion);
     }
-    for (auto it = snapshot.turrets.begin(); it != snapshot.turrets.end();
-         ++it) {
-      gs.turrets.append(boost::ref(**it));
+    for (std::shared_ptr<GameObject> turret : snapshot.turrets) {
+      game.turrets.push_back(*turret);
     }
-    for (auto it = snapshot.jungle.begin(); it != snapshot.jungle.end(); ++it) {
-      gs.jungle.append(boost::ref(**it));
+    for (std::shared_ptr<GameObject> jungle : snapshot.jungle) {
+      game.jungle.push_back(*jungle);
     }
-    for (auto it = snapshot.missiles.begin(); it != snapshot.missiles.end();
-         ++it) {
-      gs.missiles.append(boost::ref(**it));
+    for (std::shared_ptr<GameObject> missile : snapshot.missiles) {
+      game.minions.push_back(*missile);
     }
-    for (auto it = snapshot.others.begin(); it != snapshot.others.end(); ++it) {
-      gs.others.append(boost::ref(**it));
+    for (std::shared_ptr<GameObject> other : snapshot.others) {
+      game.others.push_back(*other);
     }
-    return gs;
+    return game;
   }
 };

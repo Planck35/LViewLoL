@@ -4,16 +4,14 @@
 #include <dinput.h>
 #include <dxgi1_3.h>
 
-#include <boost/python.hpp>
 #include <chrono>
 #include <list>
 #include <map>
 
 #include "ConfigSet.h"
 #include "LeagueMemoryReader.h"
-#include "PyGame.h"
-#include "PyImguiInterface.h"
-#include "Python.h"
+#include "Game.h"
+#include "ImguiInterface.h"
 #include "ScriptManager.h"
 #include "Structs.h"
 #include "imgui.h"
@@ -22,7 +20,6 @@
 #include "windows.h"
 
 using namespace std::chrono;
-using namespace boost::python;
 
 /// Manages the overlay of the cheat. Also manages the executing scripts.
 class Overlay {
@@ -43,11 +40,11 @@ class Overlay {
   static ID3D11Device* GetDxDevice();
 
  private:
-  void DrawUI(PyGame& state, MemSnapshot& memSnapshot);
-  void ExecScripts(PyGame& state);
+  void DrawUI(Game& state, MemSnapshot& memSnapshot);
+  void ExecScripts(Game& state);
 
-  void DrawOverlayWindows(PyGame& state);
-  void DrawScriptSettings(PyGame& state, MemSnapshot& memSnapshot);
+  void DrawOverlayWindows(Game& state);
+  void DrawScriptSettings(Game& state, MemSnapshot& memSnapshot);
   void DrawBenchmarks(MemSnapshot& memSnapshot);
 
   void DrawScriptError(std::shared_ptr<Script>& script);
@@ -73,7 +70,7 @@ class Overlay {
   ConfigSet& configs;
 
   ScriptManager scriptManager;
-  PyImguiInterface imguiInterface;
+  ImguiInterface imguiInterface;
 
   // Some simple benchmarks
   float renderTimeMs;
