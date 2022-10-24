@@ -1,6 +1,6 @@
 #include "Offsets.h"
 
-Offsets::Offsets() {};
+Offsets::Offsets(){};
 
 int Offsets::GameTime = 0x30d2c58;
 
