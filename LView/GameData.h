@@ -10,16 +10,16 @@
 /// accessed with this class.
 class GameData {
  public:
-  static void Load(std::string& dataFolder);
-  static UnitInfo* GetUnitInfoByName(std::string& name);
-  static SpellInfo* GetSpellInfoByName(std::string& name);
+  static void Load(const std::string& dataFolder);
+  static UnitInfo* GetUnitInfoByName(const std::string& name);
+  static SpellInfo* GetSpellInfoByName(const std::string& name);
   static ItemInfo* GetItemInfoById(int id);
 
  private:
-  static void LoadUnitData(std::string& path);
-  static void LoadSpellData(std::string& path);
-  static void LoadIcons(std::string& path);
-  static void LoadItemData(std::string& path);
+  static void LoadUnitData(const std::string& path);
+  static void LoadSpellData(const std::string& path);
+  static void LoadIcons(const std::string& path);
+  static void LoadItemData(const std::string& path);
 
  public:
   static UnitInfo* UnknownUnit;

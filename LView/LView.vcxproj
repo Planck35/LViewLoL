@@ -114,7 +114,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>F:\Github\LViewLoL\LView\external_includes;C:\Users\chaoy\source\repos\Planck35\LViewLoL\LView\boost_1_75_0;C:\Users\chaoy\source\repos\Planck35\LViewLoL\LView\boost_1_75_0\stage\lib;C:\Users\chaoy\AppData\Local\Programs\Python\Python39-32\include;C:\Users\chaoy\AppData\Local\Programs\Python\Python39-32\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\Github\LViewLoL\LView\external_includes;C:\Users\chaoy\source\repos\Planck35\LViewLoL\LView\boost_1_75_0;C:\Users\chaoy\source\repos\Planck35\LViewLoL\LView\boost_1_75_0\stage\lib;C:\Users\chaoy\AppData\Local\Programs\Python\Python39-32\include;C:\Users\chaoy\AppData\Local\Programs\Python\Python39-32\libs;C:\dev\vcpkg\vcpkg\packages\jsoncpp_x86-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -206,6 +206,7 @@
     <ClInclude Include="GameData.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ItemSlot.h" />
+    <ClInclude Include="JsonUtil.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="imgui_impl_dx11.h" />
