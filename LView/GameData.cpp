@@ -114,7 +114,7 @@ void GameData::LoadUnitData(const std::string& path) {
 void GameData::LoadSpellData(const std::string& path) {
   Json::Value json_value = ParseFromJsonFile(path);
   if (!json_value.isArray()) return;
-  
+
   for (int i = 0; i < json_value.size(); ++i) {
     const auto& spell_json = json_value[i];
     if (spell_json.isObject()) {
@@ -129,10 +129,11 @@ void GameData::LoadSpellData(const std::string& path) {
       spell_info->castRadius = spell_json["castRadius"].asFloat();
       spell_info->speed = spell_json["speed"].asFloat();
       spell_info->travelTime = spell_json["travelTime"].asFloat();
-      spell_info->flags = (SpellFlags)(spell_info->flags |
-                   (spell_json["projectDestination"].asBool()
-                        ? ProjectedDestination
-                        : 0));
+      spell_info->flags =
+          (SpellFlags)(spell_info->flags |
+                       (spell_json["projectDestination"].asBool()
+                            ? ProjectedDestination
+                            : 0));
       Spells[spell_info->name] = spell_info;
     }
   }
